@@ -1,0 +1,25 @@
+#whiteboard {
+    width: 100%;
+    height: 100%;
+}
+
+#colors-container {
+    display: flex;
+    justify-content: center;
+}
+
+#black-color {
+    color: #000000;
+}
+
+#red-color {
+    color: #dd1111;
+}
+
+#blue-color {
+    color: #0044ff;
+}
+
+#green-color {
+    color: #00dd22;
+}

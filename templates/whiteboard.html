@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+<script defer src="{{url_for('static', filename='js/whiteboard.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/whiteboard.css')}}">
+{% endblock %}
+
+{% block content %}
+<canvas id='whiteboard'>
+
+</canvas>
+{% endblock %}
+
+{% block modal %}
+<button id="draw-pan">Draw/Pan</button>
+<div id='colors-container'>
+    <button id='black-color'>Black</button>
+    <button id='red-color'>Red</button>
+    <button id='blue-color'>Blue</button>
+    <button id='green-color'>Green</button>
+</div>
+<button id='center-whiteboard'>Center Whiteboard</button>
+<button id='clear-whiteboard' class="bad">Clear Whiteboard</button>
+{% endblock %}

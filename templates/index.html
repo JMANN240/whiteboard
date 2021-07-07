@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script defer src="{{url_for('static', filename='js/index.js')}}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>
+    Generate Whiteboard, Share Whiteboard, Simple.
+</h1>
+<h1 id='options-hint'>
+    Space for options.
+</h1>
+{% endblock %}
+
+{% block modal %}
+<button id='create-whiteboard'>Create Whiteboard</button>
+{% endblock %}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <title>Whiteboard</title>
+        <script defer src="{{url_for('static', filename='js/jquery-3.6.0.js')}}"></script>
+        <script defer src="{{url_for('static', filename='js/base.js')}}"></script>
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/base.css')}}">
+        {% block header %}{% endblock %}
+    </head>
+    <body>
+        <div class="modal">
+            <div class="options-card" id='modal-options'>
+                {% block modal %}{% endblock %}
+            </div>
+        </div>
+        {% block content %}{% endblock %}
+    </body>
+</html>
