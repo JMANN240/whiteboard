@@ -77,7 +77,7 @@ def whiteboard():
         return render_template('whiteboard.html')
     
     if (request.method == 'POST'):
-        whiteboard_id = str(urlsafe_b64encode(urandom(16)))[2:-1]
+        whiteboard_id = str(urlsafe_b64encode(urandom(6)))[2:-1]
         session['whiteboard_id'] = whiteboard_id
         createWhiteboard(whiteboard_id)
         return whiteboard_id
