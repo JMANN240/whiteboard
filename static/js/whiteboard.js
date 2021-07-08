@@ -4,8 +4,6 @@ if (!touch) {
     $('#draw-pan').hide();
 }
 
-$('body').css('height', `${window.innerHeight}px`);
-
 var whiteboard = $('#whiteboard')[0]
 var current_stroke = [];
 var strokes = [];
@@ -103,6 +101,35 @@ socket.on('strokes', (s) => {
     drawStrokes(ctx, strokes, stroke_offset);
 });
 
+var change_nickname_timeout;
+$('#nickname-input').on("input", (e) => {
+    clearTimeout(change_nickname_timeout);
+    change_nickname_timeout = setTimeout(() => {
+        $.ajax({
+            type: 'POST',
+            url: '/api/nickname',
+            data: {
+                whiteboard_id: whiteboard_id,
+                new_nickname: e.target.value
+            },
+            mimeType: 'json',
+            success: (res) => {
+                if (res == "200") {
+                    $('#nickname-input').addClass('good-flash');
+                    setTimeout(() => {
+                        $('#nickname-input').removeClass('good-flash');
+                    }, 1000);
+                } else if (res == "406") {
+                    $('#nickname-input').addClass('bad-flash');
+                    setTimeout(() => {
+                        $('#nickname-input').removeClass('bad-flash');
+                    }, 1000);
+                }
+            }
+        })
+    }, 1000);
+});
+
 $('#center-whiteboard').on("click", (e) => {
     stroke_offset = [0,0];
     drawStrokes(ctx, strokes, stroke_offset);
@@ -144,3 +171,12 @@ whiteboard.addEventListener("touchend", function (e) {
     whiteboard.dispatchEvent(mouseEvent);
     e.preventDefault();
 }, false);
+
+$.ajax({
+    type: 'GET',
+    url: '/api/nickname',
+    data: {whiteboard_id: whiteboard_id},
+    success: (res) => {
+        $('#nickname-input').val(res);
+    }
+})

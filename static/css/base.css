@@ -60,6 +60,7 @@ h2 {
     justify-content: center;
 }
 
+.options-card input,
 .options-card button {
     font-size: 2vmax;
     margin: 0.5vmax;
@@ -90,4 +91,64 @@ h2 {
     background-color: #ffe0e0;
     -webkit-box-shadow: 0 4px 0 0 #ffc0c0,0 4px 10px 2px #ffd0d0;
     box-shadow: 0 4px 0 0 #ffc0c0,0 4px 10px 2px #ffd0d0;
+}
+
+.good-flash {
+    -webkit-animation-name: good-flash-animation;
+    -webkit-animation-duration: 1s;
+
+    animation-name: good-flash-animation;
+    animation-duration: 1s;
+}
+
+@-webkit-keyframes good-flash-animation {  
+    from { 
+        background: #00ff40;
+        -webkit-box-shadow: 0 2.5px 20px 0 #00CC0D, 0 2.5px 0 0 #00CC0D;
+    }
+    to   { 
+        background: var(--prim); 
+        -webkit-box-shadow: 0 2.5px 5px 0 var(--prim-shadow), 0 2.5px 0 0 var(--prim-shadow);
+    }
+}
+
+@keyframes good-flash-animation {  
+    from { 
+        background: #00ff40; 
+        box-shadow: 0 2.5px 20px 0 #00CC0D, 0 2.5px 0 0 #00CC0D;
+    }
+    to   { 
+        background: var(--prim); 
+        box-shadow: 0 2.5px 5px 0 var(--prim-shadow), 0 2.5px 0 0 var(--prim-shadow);
+    }
+}
+
+.bad-flash {
+    -webkit-animation-name: bad-flash-animation;
+    -webkit-animation-duration: 1s;
+
+    animation-name: bad-flash-animation;
+    animation-duration: 1s;
+}
+
+@-webkit-keyframes bad-flash-animation {  
+    from { 
+        background: #ff2020; 
+        -webkit-box-shadow: 0 2.5px 20px 0 #CC0000, 0 2.5px 0 0 #CC0000;
+    }
+    to   { 
+        background: var(--prim); 
+        -webkit-box-shadow: 0 2.5px 5px 0 var(--prim-shadow), 0 2.5px 0 0 var(--prim-shadow);
+    }
+}
+
+@keyframes bad-flash-animation {  
+    from { 
+        background: #ff2020; 
+        box-shadow: 0 2.5px 20px 0 #CC0000, 0 2.5px 0 0 #CC0000;
+    }
+    to   { 
+        background: var(--prim); 
+        box-shadow: 0 2.5px 5px 0 var(--prim-shadow), 0 2.5px 0 0 var(--prim-shadow);
+    }
 }

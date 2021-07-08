@@ -9,5 +9,3 @@ $('#create-whiteboard').on('click', (e) => {
         }
     });
 });
-
-$('body').css('height', `${window.innerHeight}px`);

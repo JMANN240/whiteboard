@@ -1,7 +1,11 @@
 const touch = matchMedia('(hover: none)').matches;
 
+const hasModal = $('#modal-options > *').length != 0;
+
+$('body').css('height', `${window.innerHeight}px`);
+
 $(document).on("keypress", (e) => {
-    if (e.code == "Space") {
+    if (e.code == "Space" && hasModal) {
         e.preventDefault();
         $('.modal').addClass('visible');
     }
@@ -22,7 +26,7 @@ document.addEventListener('touchstart', (e) => {
     current_touches = e.targetTouches.length
     clearTimeout(tap_hold_timeout)
     tap_hold_timeout = setTimeout(() => {
-        if (max_touches == 2 && current_touches == 0) {
+        if (max_touches == 2 && current_touches == 0 && hasModal) {
             $('.modal').addClass('visible');
         }
         if (max_touches == 1 && current_touches == 0 && e.changedTouches[0].target == $('.modal')[0]) {
