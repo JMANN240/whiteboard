@@ -51,7 +51,22 @@ var drawPoints = (context, stroke, offset) => {
     context.stroke();
 }
 
-var socket = io.connect('192.168.0.7:8000', {query: `id=${whiteboard_id}`});
+var socket;
+
+$.ajax({
+    type: 'GET',
+    url: '/api/settings',
+    success: (res) => {
+        socket = io.connect(res.socketio_host + ':' + res.port, {query: `id=${whiteboard_id}`});
+
+        socket.on('strokes', (s) => {
+            strokes = s
+            drawStrokes(ctx, strokes, stroke_offset);
+        });
+
+
+    }
+});
 
 whiteboard.addEventListener("mousedown", (e) => {
     if (e.button == 0) {
@@ -94,11 +109,6 @@ $('#colors-container > button').on("click", (e) => {
 
 $('#draw-pan').on("click", (e) => {
     touch_button = (touch_button - 1) * -1;
-});
-
-socket.on('strokes', (s) => {
-    strokes = s
-    drawStrokes(ctx, strokes, stroke_offset);
 });
 
 var change_nickname_timeout;

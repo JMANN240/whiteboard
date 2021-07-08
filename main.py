@@ -82,6 +82,10 @@ def whiteboard():
         createWhiteboard(whiteboard_id)
         return whiteboard_id
 
+@app.route('/api/settings')
+def api_settings():
+    return settings
+
 @app.route('/api/nickname', methods=['GET', 'POST'])
 def api_nickname():
     if request.method == 'GET':
@@ -124,4 +128,4 @@ def clear():
     socketio.emit('strokes', [], to=session['whiteboard_id'], broadcast=True)
 
 if (__name__ == '__main__'):
-    socketio.run(app, host='0.0.0.0', port=settings["port"], debug=settings["debug"])
+    socketio.run(app, host=settings["flask_host"], port=settings["port"], debug=settings["debug"])
