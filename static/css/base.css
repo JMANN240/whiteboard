@@ -71,7 +71,6 @@ h2 {
     border: 0px;
     -webkit-box-shadow: 0 4px 0 0 #c0c0c0,0 4px 10px 2px #dfdfdf;
     box-shadow: 0 4px 0 0 #c0c0c0,0 4px 10px 2px #dfdfdf;
-    user-select: none;
     transition-duration: 0.1s;
 }
 
