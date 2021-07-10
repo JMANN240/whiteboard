@@ -1,5 +1,5 @@
 from sys import meta_path
-from flask import Flask, render_template, request, session, redirect, flash, make_response
+from flask import Flask, render_template, request, session, redirect, flash, make_response, jsonify
 from flask_socketio import SocketIO, join_room
 from passlib.hash import sha256_crypt as sha256
 from os import urandom
@@ -8,7 +8,7 @@ import sqlite3, json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = urandom(24)
-socketio = SocketIO(app, cors_allowed_origins='*')
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 @app.context_processor
 def inject_user():
@@ -147,7 +147,7 @@ def signup():
                 return make_response(redirect("/signup"))
             
             hashed_password = sha256.hash(password)
-            cursor.execute('INSERT INTO users VALUES (?, ?)', (username, hashed_password))
+            cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, hashed_password))
         
             session['username'] = username
             res = make_response(redirect("/"))
@@ -174,6 +174,30 @@ def whiteboard():
 @app.route('/api/settings')
 def api_settings():
     return settings
+
+@app.route('/api/whiteboard', methods=["GET", "POST"])
+def api_whiteboards():
+    if 'username' not in session:
+        return "403"
+    
+    if request.method == 'GET':
+        username = session['username']
+        with sqlite3.connect("database.db") as connection:
+            cursor = connection.cursor()
+            cursor.execute('''SELECT whiteboard_id, nickname FROM whiteboards WHERE whiteboard_id IN (SELECT whiteboard_id FROM user_whiteboards WHERE user_id=(SELECT user_id FROM users WHERE username = :username))''', {'username': username})
+            return jsonify(cursor.fetchall())
+
+    if request.method == 'POST':
+        username = session['username']
+        whiteboard_id = request.form.get('whiteboard_id')
+        saved = request.form.get('saved') == 'true'
+        with sqlite3.connect("database.db") as connection:
+            cursor = connection.cursor()
+            if saved:
+                cursor.execute('''INSERT INTO user_whiteboards (user_id, whiteboard_id) VALUES ((SELECT user_id FROM users WHERE username = :username), :whiteboard_id)''', {'username': username, 'whiteboard_id': whiteboard_id})
+            else:
+                cursor.execute('''DELETE FROM user_whiteboards WHERE whiteboard_id=:whiteboard_id AND user_id=(SELECT user_id FROM users WHERE username = :username)''', {'username': username, 'whiteboard_id': whiteboard_id})
+        return "200"
 
 @app.route('/api/nickname', methods=['GET', 'POST'])
 def api_nickname():

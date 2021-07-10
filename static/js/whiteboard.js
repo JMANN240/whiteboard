@@ -54,14 +54,12 @@ $.ajax({
     type: 'GET',
     url: '/api/settings',
     success: (res) => {
-        socket = io.connect(res.socketio_host + ':' + res.port, {query: `id=${whiteboard_id}`});
+        socket = io.connect('http://' + res.socketio_host + ':' + res.port, {query: `id=${whiteboard_id}`});
 
         socket.on('strokes', (s) => {
             strokes = s
             drawStrokes(ctx, strokes, stroke_offset);
         });
-
-
     }
 });
 
@@ -100,6 +98,33 @@ $('#nickname-input').on("input", (e) => {
             }
         })
     }, 1000);
+});
+
+$.ajax({
+    type: "GET",
+    url: "/api/whiteboard",
+    success: (res) => {
+        for (var [test_whiteboard_id, _] of res) {
+            if (test_whiteboard_id == whiteboard_id) {
+                $('#saved').prop('checked', true);
+                break;
+            }
+        }
+    }
+})
+
+$('#saved').on('input', (e) => {
+    $.ajax({
+        type: "POST",
+        url: "/api/whiteboard",
+        data: {
+            whiteboard_id: whiteboard_id,
+            saved: $('#saved').prop('checked')
+        },
+        success: (res) => {
+            console.log(res);
+        }
+    })
 });
 
 $('#center-whiteboard').on("click", (e) => {
