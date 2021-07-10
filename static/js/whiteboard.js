@@ -54,7 +54,7 @@ $.ajax({
     type: 'GET',
     url: '/api/settings',
     success: (res) => {
-        socket = io.connect('http://' + res.socketio_host + ':' + res.port, {query: `id=${whiteboard_id}`});
+        socket = io.connect(res.socketio_host + ':' + res.port, {query: `id=${whiteboard_id}`});
 
         socket.on('strokes', (s) => {
             strokes = s
