@@ -15,7 +15,9 @@
 
 {% block modal %}
 <button id='create-whiteboard'>Create Whiteboard</button>
+{% if logged_in %}
 <div id='saved-whiteboards' class='flex row' style="max-width: 50vw;"></div>
+{% endif %}
 <div id='account-div'>
     {% if not logged_in %}
     <button id='login'>Login</button>
