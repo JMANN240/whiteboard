@@ -72,10 +72,6 @@ $('#colors-container > button').on("click", (e) => {
     ctx.strokeStyle = $(e.target).css('color');
 });
 
-$('#draw-pan').on("click", (e) => {
-    touch_button = (touch_button - 1) * -1;
-});
-
 var change_nickname_timeout;
 $('#nickname-input').on("input", (e) => {
     clearTimeout(change_nickname_timeout);
