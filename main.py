@@ -64,6 +64,10 @@ def resolveNickname(nickname):
 def index():
     return render_template('index.html')
 
+@app.route('/tap')
+def tap():
+    return render_template('tap.html')
+
 @app.route('/<nickname>')
 def nickname(nickname):
     whiteboard_id = resolveNickname(nickname)

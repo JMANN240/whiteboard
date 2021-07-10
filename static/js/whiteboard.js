@@ -1,10 +1,6 @@
 const whiteboard_id = new URLSearchParams(window.location.search).get('id')
 
-if (!touch) {
-    $('#draw-pan').hide();
-}
-
-var whiteboard = $('#whiteboard')[0]
+var whiteboard = $('#whiteboard')[0];
 var current_stroke = [];
 var strokes = [];
 var stroke_offset = [0, 0];
@@ -21,7 +17,7 @@ $(window).on('resize', (e) => {
 
 var ctx = whiteboard.getContext("2d");
 ctx.strokeStyle = "#000000";
-ctx.lineWidth = 1;
+ctx.lineWidth = 3;
 
 var drawing = false;
 var panning = false;
@@ -39,6 +35,7 @@ var drawStrokes = (context, strokes, offset) => {
 var drawPoints = (context, stroke, offset) => {
     var [points, color] = stroke;
     context.strokeStyle = color;
+    ctx.lineWidth = 3;
     context.beginPath();
     if (points.length > 0) {
         const [x, y] = points[0];
@@ -68,40 +65,8 @@ $.ajax({
     }
 });
 
-whiteboard.addEventListener("mousedown", (e) => {
-    if (e.button == 0) {
-        drawing = true;
-        current_stroke.push([e.clientX-stroke_offset[0], e.clientY-stroke_offset[1]]);
-        ctx.beginPath();
-        ctx.moveTo(e.clientX, e.clientY);
-    }
-    if (e.button == 1) {
-        panning = true;
-    }
-    
-});
-
-whiteboard.addEventListener("mousemove", (e) => {
-    if (drawing) {
-        current_stroke.push([e.clientX-stroke_offset[0], e.clientY-stroke_offset[1]]);
-        ctx.lineTo(e.clientX, e.clientY);
-        ctx.stroke();
-    }
-    if (panning) {
-        stroke_offset[0] += (e.movementX ?? (e.clientX - prevTouch[0]))
-        stroke_offset[1] += (e.movementY ?? (e.clientY - prevTouch[1]))
-        drawStrokes(ctx, strokes, stroke_offset);
-    }
-});
-
-whiteboard.addEventListener("mouseup", (e) => {
-    if (e.button == 0) {
-        socket.emit('new-stroke', current_stroke, ctx.strokeStyle);
-        current_stroke = [];
-    }
-    drawing = false;
-    panning = false;
-});
+var start_point;
+var prev_point;
 
 $('#colors-container > button').on("click", (e) => {
     ctx.strokeStyle = $(e.target).css('color');
@@ -149,39 +114,6 @@ $('#clear-whiteboard').on("click", (e) => {
     socket.emit("clear");
 });
 
-touch_button = 0;
-
-whiteboard.addEventListener("touchstart", function (e) {
-    var touch = e.touches[0];
-    prevTouch = [touch.clientX, touch.clientY]
-    var mouseEvent = new MouseEvent("mousedown", {
-        clientX: touch.clientX,
-        clientY: touch.clientY,
-        button: touch_button
-    });
-    whiteboard.dispatchEvent(mouseEvent);
-    e.preventDefault();
-}, false);
-
-whiteboard.addEventListener("touchmove", function (e) {
-    var touch = e.touches[0];
-    var mouseEvent = new MouseEvent("mousemove", {
-        clientX: touch.clientX,
-        clientY: touch.clientY
-    });
-    whiteboard.dispatchEvent(mouseEvent);
-    prevTouch = [touch.clientX, touch.clientY]
-    e.preventDefault();
-}, false);
-
-whiteboard.addEventListener("touchend", function (e) {
-    var mouseEvent = new MouseEvent("mouseup", {
-        button: e.touches.length
-    });
-    whiteboard.dispatchEvent(mouseEvent);
-    e.preventDefault();
-}, false);
-
 $.ajax({
     type: 'GET',
     url: '/api/nickname',
@@ -190,3 +122,71 @@ $.ajax({
         $('#nickname-input').val(res);
     }
 })
+
+whiteboard.addEventListener("mousedown", (e) => {
+    if (e.button == 0) {
+        start_point = [e.clientX-stroke_offset[0], e.clientY-stroke_offset[1]];
+    }
+    prev_point = [e.clientX, e.clientY]
+    
+});
+
+whiteboard.addEventListener("mousemove", (e) => {
+    if (e.buttons == 1) {
+        if (current_stroke.length == 0) {
+            ctx.beginPath();
+            ctx.moveTo(prev_point[0], prev_point[1]);
+            current_stroke.push(start_point);
+        }
+        if (e.clientX != current_stroke[current_stroke.length-1][0] && e.clientY != current_stroke[current_stroke.length-1][1]) {
+            current_stroke.push([e.clientX-stroke_offset[0], e.clientY-stroke_offset[1]]);
+        }
+        ctx.lineTo(e.clientX, e.clientY);
+        ctx.stroke();
+    }
+    if (e.buttons == 4) {
+        movementX = e.clientX - prev_point[0];
+        movementY = e.clientY - prev_point[1];
+        stroke_offset[0] += movementX;
+        stroke_offset[1] += movementY;
+        drawStrokes(ctx, strokes, stroke_offset);
+    }
+    prev_point = [e.clientX, e.clientY]
+});
+
+whiteboard.addEventListener("mouseup", (e) => {
+    if (e.button == 0) {
+        if (current_stroke.length > 0) {
+            current_stroke.push([e.clientX-stroke_offset[0], e.clientY-stroke_offset[1]]);
+            socket.emit('new-stroke', current_stroke, ctx.strokeStyle);
+        }
+        current_stroke = [];
+    }
+});
+
+document.addEventListener("dragstart", function (e) {
+    var mouseEvent = new MouseEvent("mousedown", {
+        clientX: e.detail.clientX,
+        clientY: e.detail.clientY,
+        button: e.detail.fingeredness - 1
+    });
+    whiteboard.dispatchEvent(mouseEvent);
+});
+
+document.addEventListener("drag", function (e) {
+    var mouseEvent = new MouseEvent("mousemove", {
+        clientX: e.detail.clientX,
+        clientY: e.detail.clientY,
+        buttons: (e.detail.fingeredness == 1 ? 1 : 0) + (e.detail.fingeredness == 2 ? 4 : 0)
+    });
+    whiteboard.dispatchEvent(mouseEvent);
+});
+
+document.addEventListener("dragend", function (e) {
+    var mouseEvent = new MouseEvent("mouseup", {
+        clientX: e.detail.clientX,
+        clientY: e.detail.clientY,
+        button: e.detail.fingeredness - 1
+    });
+    whiteboard.dispatchEvent(mouseEvent);
+});
