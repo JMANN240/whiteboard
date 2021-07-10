@@ -21,11 +21,6 @@ h1 {
     font-size: 4vw;
 }
 
-h2 {
-    color: red;
-    background-color: white;
-}
-
 .modal {
     opacity: 0;
     display: flex;
@@ -58,6 +53,8 @@ h2 {
     justify-content: center;
 }
 
+#saved-label,
+input,
 .options-card input,
 .options-card button {
     font-size: 2vmax;
@@ -72,12 +69,16 @@ h2 {
     transition-duration: 0.1s;
 }
 
+#saved-label:hover,
+input[type='submit']:hover,
 .options-card button:hover {
     -webkit-box-shadow: 0 3px 0 0 #c0c0c0,0 3px 7.5px 1.5px #d0d0d0;
     box-shadow: 0 3px 0 0 #c0c0c0,0 3px 7.5px 1.5px #d0d0d0;
     transform: translateY(1px);
 }
 
+#saved-label:active,
+input[type='submit']:active,
 .options-card button:active {
     -webkit-box-shadow: 0 0 0 0 #c0c0c0, 0 0 0 0 #d0d0d0;
     box-shadow: 0 0 0 0 #c0c0c0, 0 0 0 0 #d0d0d0;
@@ -148,4 +149,17 @@ h2 {
         background: var(--prim); 
         box-shadow: 0 2.5px 5px 0 var(--prim-shadow), 0 2.5px 0 0 var(--prim-shadow);
     }
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.row {
+    flex-direction: row;
+}
+
+.column {
+    flex-direction: column;
 }

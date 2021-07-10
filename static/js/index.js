@@ -9,3 +9,15 @@ $('#create-whiteboard').on('click', (e) => {
         }
     });
 });
+
+$('#login').on('click', (e) => {
+    window.location.href = `/login`;
+});
+
+$('#signup').on('click', (e) => {
+    window.location.href = `/signup`;
+});
+
+$('#logout').on('click', (e) => {
+    window.location.href = `/logout`;
+});

@@ -23,3 +23,23 @@
 #green-color {
     color: #00dd22;
 }
+
+#saved:checked + #saved-label {
+    background-color: #e0ffe0;
+    -webkit-box-shadow: 0 4px 0 0 #c0ffc0,0 4px 10px 2px #d0ffd0;
+    box-shadow: 0 4px 0 0 #c0ffc0,0 4px 10px 2px #d0ffd0;
+}
+
+#saved:checked + #saved-label:hover {
+    background-color: #e0ffe0;
+    -webkit-box-shadow: 0 3px 0 0 #c0ffc0,0 3px 7.5px 1.5px #d0ffd0;
+    box-shadow: 0 3px 0 0 #c0ffc0,0 3px 7.5px 1.5px #d0ffd0;
+    transform: translateY(1px);
+}
+
+#saved:checked + #saved-label:active {
+    background-color: #e0ffe0;
+    -webkit-box-shadow: 0 0 0 0 #c0ffc0,0 0 0 0 #d0ffd0;
+    box-shadow: 0 0 0 0 #c0ffc0,0 0 0 0 #d0ffd0;
+    transform: translateY(4px);
+}

@@ -7,7 +7,7 @@ const modal = document.querySelector('.modal');
 $('body').css('height', `${window.innerHeight}px`);
 
 $(document).on("keypress", (e) => {
-    if (e.code == "Space" && hasModal) {
+    if (e.code == "Space" && hasModal && !$('.modal').hasClass('visible')) {
         e.preventDefault();
         $('.modal').addClass('visible');
     }

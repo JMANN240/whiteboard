@@ -1,6 +1,7 @@
 from sys import meta_path
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, flash, make_response
 from flask_socketio import SocketIO, join_room
+from passlib.hash import sha256_crypt as sha256
 from os import urandom
 from base64 import urlsafe_b64encode
 import sqlite3, json
@@ -8,6 +9,16 @@ import sqlite3, json
 app = Flask(__name__)
 app.config['SECRET_KEY'] = urandom(24)
 socketio = SocketIO(app, cors_allowed_origins='*')
+
+@app.context_processor
+def inject_user():
+    if 'username' in session:
+        logged_in = True
+        username = session['username']
+    else:
+        logged_in = False
+        username = None
+    return dict(logged_in=logged_in, username=username)
 
 with open("settings.json", "r") as settings_file:
     settings = json.load(settings_file)
@@ -64,9 +75,83 @@ def resolveNickname(nickname):
 def index():
     return render_template('index.html')
 
-@app.route('/tap')
-def tap():
-    return render_template('tap.html')
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    
+    if request.method == 'POST':
+        username = request.form.get("username")
+        if not username:
+            flash("No username provided")
+            return make_response(redirect("/login"))
+        
+        password = request.form.get("password")
+        if not password:
+            flash("No password provided")
+            return make_response(redirect("/login"))
+        
+        with sqlite3.connect("database.db") as connection:
+            cursor = connection.cursor()
+            cursor.execute('SELECT username FROM users WHERE username=?', (username,))
+            if not cursor.fetchall():
+                flash(f"Could not find username '{username}'")
+                return make_response(redirect("/login"))
+            
+            cursor.execute('SELECT password FROM users WHERE username=?', (username,))
+            hashed_password = cursor.fetchone()[0]
+            if not sha256.verify(password, hashed_password):
+                flash("Incorrect username or password")
+                return make_response(redirect("/login"))
+
+            session['username'] = username
+            res = make_response(redirect("/"))
+            return res
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    session.pop('username', None)
+    res = make_response(redirect("/"))
+    return res
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == 'GET':
+        return render_template('signup.html')
+    
+    if request.method == 'POST':
+        username = request.form.get("username")
+        if not username:
+            flash("No username provided")
+            return make_response(redirect("/signup"))
+        
+        password = request.form.get("password")
+        if not password:
+            flash("No password provided")
+            return make_response(redirect("/signup"))
+        
+        confirm_password = request.form.get("confirm-password")
+        if not confirm_password:
+            flash("No confirmation password provided")
+            return make_response(redirect("/signup"))
+        
+        if password != confirm_password:
+            flash("Passwords do not match")
+            return make_response(redirect("/signup"))
+        
+        with sqlite3.connect("database.db") as connection:
+            cursor = connection.cursor()
+            cursor.execute('SELECT username FROM users WHERE username=?', (username,))
+            if cursor.fetchall():
+                flash(f"Username '{username}' unavailable")
+                return make_response(redirect("/signup"))
+            
+            hashed_password = sha256.hash(password)
+            cursor.execute('INSERT INTO users VALUES (?, ?)', (username, hashed_password))
+        
+            session['username'] = username
+            res = make_response(redirect("/"))
+            return res
 
 @app.route('/<nickname>')
 def nickname(nickname):

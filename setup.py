@@ -22,3 +22,11 @@ with sqlite3.connect('database.db') as connection:
                 REFERENCES whiteboards (whiteboard_id)
         )
     ''')
+
+    cursor.execute('''DROP TABLE IF EXISTS users''')
+    cursor.execute('''
+        CREATE TABLE users (
+            username TEXT UNIQUE NOT NULL, 
+            password TEXT NOT NULL
+        )
+    ''')

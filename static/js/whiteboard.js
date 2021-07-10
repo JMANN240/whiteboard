@@ -74,6 +74,7 @@ $('#colors-container > button').on("click", (e) => {
 
 var change_nickname_timeout;
 $('#nickname-input').on("input", (e) => {
+    $('#nickname-input').val($('#nickname-input').val().replace(/ /g, '_'));
     clearTimeout(change_nickname_timeout);
     change_nickname_timeout = setTimeout(() => {
         $.ajax({
