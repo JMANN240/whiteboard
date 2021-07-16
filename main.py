@@ -241,4 +241,4 @@ def clear():
     socketio.emit('strokes', [], to=session['whiteboard_id'], broadcast=True)
 
 if (__name__ == '__main__'):
-    socketio.run(app, host=settings["flask_host"], port=settings["port"], debug=settings["debug"])
+    socketio.run(app, host=settings.get("flask_host", "0.0.0.0"), port=settings.get("port", 8000), debug=settings.get("debug", False), keyfile=settings.get("keyfile", None), certfile=settings.get("certfile", None))
