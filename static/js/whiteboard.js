@@ -18,24 +18,30 @@ $(window).on('resize', (e) => {
 var ctx = whiteboard.getContext("2d");
 ctx.strokeStyle = "#000000";
 ctx.lineWidth = 3;
+ctx.lineCap = "round";
+ctx.lineJoin = "round";
 
 var drawing = false;
 var panning = false;
 
 var drawStrokes = (context, strokes, offset) => {
     var prevStrokeStyle = context.strokeStyle;
+    var prevLineWidth = context.lineWidth;
     whiteboard.width = window.innerWidth;
     whiteboard.height = window.innerHeight;
     for (const stroke of strokes) {
         drawPoints(context, stroke, offset);
     }
     context.strokeStyle = prevStrokeStyle;
+    context.lineWidth = prevLineWidth;
 }
 
 var drawPoints = (context, stroke, offset) => {
-    var [points, color] = stroke;
+    var [points, color, width] = stroke;
     context.strokeStyle = color;
-    ctx.lineWidth = 3;
+    context.lineWidth = width;
+    context.lineCap = "round";
+    ctx.lineJoin = "round";
     context.beginPath();
     if (points.length > 0) {
         const [x, y] = points[0];
@@ -67,7 +73,13 @@ var start_point;
 var prev_point;
 
 $('#colors-container > button').on("click", (e) => {
-    ctx.strokeStyle = $(e.target).css('color');
+    if ($(e.target).attr('id') == 'eraser-color') {
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 13;
+    } else {
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = $(e.target).css('color');
+    }
 });
 
 var change_nickname_timeout;
@@ -180,7 +192,7 @@ whiteboard.addEventListener("mouseup", (e) => {
     if (e.button == 0) {
         if (current_stroke.length > 0) {
             current_stroke.push([e.clientX-stroke_offset[0], e.clientY-stroke_offset[1]]);
-            socket.emit('new-stroke', current_stroke, ctx.strokeStyle);
+            socket.emit('new-stroke', current_stroke, ctx.strokeStyle, ctx.lineWidth);
         }
         current_stroke = [];
     }

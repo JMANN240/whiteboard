@@ -33,14 +33,14 @@ def createWhiteboard(whiteboard_id):
 def loadStrokes(whiteboard_id):
     with sqlite3.connect('database.db') as connection:
         cursor = connection.cursor()
-        cursor.execute('''SELECT points, color FROM strokes WHERE whiteboard_id=:whiteboard_id''', {'whiteboard_id': whiteboard_id})
-        strokes = [[json.loads(row[0]), row[1]] for row in cursor.fetchall()]
+        cursor.execute('''SELECT points, color, width FROM strokes WHERE whiteboard_id=:whiteboard_id''', {'whiteboard_id': whiteboard_id})
+        strokes = [[json.loads(row[0]), row[1], row[2]] for row in cursor.fetchall()]
     return strokes
 
-def addStroke(whiteboard_id, points, color):
+def addStroke(whiteboard_id, points, color, width):
     with sqlite3.connect('database.db') as connection:
         cursor = connection.cursor()
-        cursor.execute('''INSERT INTO strokes (whiteboard_id, points, color) VALUES (:whiteboard_id, :points, :color)''', {'whiteboard_id': whiteboard_id, 'points': json.dumps(points), 'color': color})
+        cursor.execute('''INSERT INTO strokes (whiteboard_id, points, color, width) VALUES (:whiteboard_id, :points, :color, :width)''', {'whiteboard_id': whiteboard_id, 'points': json.dumps(points), 'color': color, 'width': width})
 
 def clearStrokes(whiteboard_id):
     with sqlite3.connect('database.db') as connection:
@@ -228,9 +228,9 @@ def connect():
     socketio.emit('strokes', strokes, to=session['whiteboard_id'])
 
 @socketio.on("new-stroke")
-def new_stroke(points, color):
+def new_stroke(points, color, width):
     print('new-stroke')
-    addStroke(session['whiteboard_id'], points, color)
+    addStroke(session['whiteboard_id'], points, color, width)
     strokes = loadStrokes(session['whiteboard_id'])
     socketio.emit('strokes', strokes, to=session['whiteboard_id'], broadcast=True)
 
@@ -241,4 +241,8 @@ def clear():
     socketio.emit('strokes', [], to=session['whiteboard_id'], broadcast=True)
 
 if (__name__ == '__main__'):
-    socketio.run(app, host=settings.get("flask_host", "0.0.0.0"), port=settings.get("port", 8000), debug=settings.get("debug", False), keyfile=settings.get("keyfile", None), certfile=settings.get("certfile", None))
+    socketio.run(app, host=settings.get("flask_host", "0.0.0.0"), 
+                 port=settings.get("port", 8000), 
+                 debug=settings.get("debug", False), 
+                 keyfile=settings.get("keyfile"), 
+                 certfile=settings.get("certfile"))

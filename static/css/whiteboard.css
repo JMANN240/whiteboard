@@ -24,6 +24,10 @@
     color: #00dd22;
 }
 
+#eraser-color {
+    color: #000000
+}
+
 #saved:checked + #saved-label {
     background-color: #e0ffe0;
     -webkit-box-shadow: 0 4px 0 0 #c0ffc0,0 4px 10px 2px #d0ffd0;

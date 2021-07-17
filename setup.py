@@ -17,6 +17,7 @@ with sqlite3.connect('database.db') as connection:
             whiteboard_id TEXT,
             points TEXT,
             color TEXT,
+            width INTEGER,
             CONSTRAINT fk_whiteboard_id
                 FOREIGN KEY (whiteboard_id)
                 REFERENCES whiteboards (whiteboard_id)
