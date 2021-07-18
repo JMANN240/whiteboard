@@ -91,6 +91,20 @@ input[type='submit']:active,
     box-shadow: 0 4px 0 0 #ffc0c0,0 4px 10px 2px #ffd0d0;
 }
 
+.options-card button.bad:hover {
+    background-color: #ffe0e0;
+    -webkit-box-shadow: 0 3px 0 0 #ffc0c0,0 3px 7.5px 1.5px #ffd0d0;
+    box-shadow: 0 3px 0 0 #ffc0c0,0 3px 7.5px 1.5px #ffd0d0;
+    transform: translateY(1px);
+}
+
+.options-card button.bad:active {
+    background-color: #ffe0e0;
+    -webkit-box-shadow: 0 0 0 0 #ffc0c0,0 0 0 0 #ffd0d0;
+    box-shadow: 0 0 0 0 #ffc0c0,0 0 0 0 #ffd0d0;
+    transform: translateY(4px);
+}
+
 .good-flash {
     -webkit-animation-name: good-flash-animation;
     -webkit-animation-duration: 1s;
