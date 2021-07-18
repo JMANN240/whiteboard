@@ -13,9 +13,11 @@
 {% endblock %}
 
 {% block modal %}
-<input id="nickname-input" type="text" placeholder="Nickname">
-<input type='checkbox' id='saved' style='display: none;'>
-<label for='saved' id='saved-label'>Save Whiteboard</label>
+<div class='flex'>
+    <input style='width: 10ch; flex-grow: 1;' id="nickname-input" type="text" placeholder="Nickname">
+    <input type='checkbox' id='saved' style='display: none;'>
+    <label style='flex-grow: 1;' for='saved' id='saved-label'>Save Whiteboard</label>
+</div>
 <div id='colors-container'>
     <button id='black-color'>Black</button>
     <button id='red-color'>Red</button>
@@ -24,5 +26,8 @@
     <button id='eraser-color' class="bad">Eraser</button>
 </div>
 <button id='center-whiteboard'>Center Whiteboard</button>
-<button id='clear-whiteboard' class="bad">Clear Whiteboard</button>
+<div class='flex'>
+    <button style='flex-grow: 1;' id='clear-whiteboard' class="bad">Clear Whiteboard</button>
+    <button style='flex-grow: 1;' id='home'>Home</button>
+</div>
 {% endblock %}

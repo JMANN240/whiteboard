@@ -148,6 +148,10 @@ $('#clear-whiteboard').on("click", (e) => {
     socket.emit("clear");
 });
 
+$('#home').on("click", (e) => {
+    window.location.href = `/`;
+});
+
 $.ajax({
     type: 'GET',
     url: '/api/nickname',

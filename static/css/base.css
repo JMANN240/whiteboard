@@ -53,11 +53,16 @@ h1 {
     justify-content: center;
 }
 
+#modal-options {
+    align-items: stretch;
+}
+
 #saved-label,
 input,
 .options-card input,
 .options-card button {
     font-size: 2vmax;
+    text-align: center;
     margin: 0.5vmax;
     padding: 0.5vmax;
     background-color: white;

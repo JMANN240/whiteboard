@@ -175,6 +175,12 @@ def whiteboard():
 def api_settings():
     return settings
 
+@app.route("/api/strokes")
+def api_strokes():
+    whiteboard_id = request.args.get('whiteboard_id')
+    strokes = loadStrokes(whiteboard_id)
+    return {"strokes": strokes, "whiteboard_id": whiteboard_id}
+
 @app.route('/api/whiteboard', methods=["GET", "POST"])
 def api_whiteboards():
     if 'username' not in session:
