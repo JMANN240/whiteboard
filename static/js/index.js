@@ -16,6 +16,7 @@ $('#switch-theme').on('click', (e) => {
     theme = theme == 'light' ? 'dark' : 'light'
     window.localStorage.setItem('theme', theme);
     update_theme();
+    show_previews();
 });
 
 $('#create-whiteboard').on('click', (e) => {
@@ -97,7 +98,13 @@ var drawStrokes = (context, strokes, offset, scale) => {
 
 var drawPoints = (context, stroke, offset, scale) => {
     var [points, color, width] = stroke;
-    context.strokeStyle = (color == '#ffffff' || color == '#000000') ? getComputedStyle(document.documentElement).getPropertyValue('--sec') : color;;
+    if (color == '#ffffff' || color == '#000000') {
+        context.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--sec');
+    } else if (color == 'erase') {
+        context.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--prim');
+    } else {
+        context.strokeStyle = color;
+    }    
     context.lineWidth = 1;
     context.lineCap = "round";
     context.lineJoin = "round";

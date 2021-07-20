@@ -38,7 +38,13 @@ var drawStrokes = (context, strokes, offset) => {
 
 var drawPoints = (context, stroke, offset) => {
     var [points, color, width] = stroke;
-    context.strokeStyle = (color == '#ffffff' || color == '#000000') ? getComputedStyle(document.documentElement).getPropertyValue('--sec') : color;
+    if (color == '#ffffff' || color == '#000000') {
+        context.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--sec');
+    } else if (color == 'erase') {
+        context.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--prim');
+    } else {
+        context.strokeStyle = color;
+    }
     context.lineWidth = width;
     context.lineCap = "round";
     ctx.lineJoin = "round";
@@ -76,18 +82,21 @@ console.log(getComputedStyle(document.documentElement).getPropertyValue('--sec')
 
 if (getComputedStyle(document.documentElement).getPropertyValue('--sec') == '#ffffff') {
     $('#sec-color').html('White');
-} else if (getComputedStyle(document.documentElement).getPropertyValue('--sec') == '#000000') {
+} else if (getComputedStyle(document.documentElement).getPropertyValue('--sec') == '#202020') {
     $('#sec-color').html('Black');
 }
 
+var erasing = false;
 
 $('#colors-container > button').on("click", (e) => {
     if ($(e.target).attr('id') == 'eraser-color') {
         ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--prim');
         ctx.lineWidth = 13;
+        erasing = true;
     } else {
         ctx.lineWidth = 3;
         ctx.strokeStyle = $(e.target).css('color');
+        erasing = false;
     }
 });
 
@@ -205,7 +214,7 @@ whiteboard.addEventListener("mouseup", (e) => {
     if (e.button == 0) {
         if (current_stroke.length > 0) {
             current_stroke.push([e.clientX-stroke_offset[0], e.clientY-stroke_offset[1]]);
-            socket.emit('new-stroke', current_stroke, ctx.strokeStyle, ctx.lineWidth);
+            socket.emit('new-stroke', current_stroke, erasing ? 'erase' : ctx.strokeStyle, ctx.lineWidth);
         }
         current_stroke = [];
     }
