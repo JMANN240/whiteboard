@@ -1,11 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap');
 
+:root {
+    --prim: #ffffff;
+    --prim-shadow: #c0c0c0;
+    --prim-shadow-sec: #d0d0d0;
+    --sec: #000000;
+}
+
 * {
     font-family: 'Roboto', 'sans-serif';
     font-weight: 100;
 }
 
 body {
+    background-color: var(--prim);
+    color: var(--sec);
     margin: 0;
     padding: 0;
     width: 100vw;
@@ -16,8 +25,12 @@ body {
     justify-content: flex-start;
 }
 
+body.dark {
+    background-color: var(--sec);
+    color: var(--prim);
+}
+
 h1 {
-    color: black;
     font-size: 4vw;
 }
 
@@ -43,17 +56,13 @@ h1 {
 }
 
 .options-card {
-    background-color: white;
-    border: 1px solid black;
+    background-color: var(--prim);
+    border: 1px solid var(--sec);
     border-radius: 1vmax;
     padding: 1vmax;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-}
-
-#modal-options {
     align-items: stretch;
 }
 
@@ -61,52 +70,50 @@ h1 {
 input,
 .options-card input,
 .options-card button {
+    background-color: var(--prim);
+    color: var(--sec);
     font-size: 2vmax;
     text-align: center;
     margin: 0.5vmax;
     padding: 0.5vmax;
-    background-color: white;
-    color: black;
     border-radius: 1vmax;
     border: 0px;
-    -webkit-box-shadow: 0 4px 0 0 #c0c0c0,0 4px 10px 2px #dfdfdf;
-    box-shadow: 0 4px 0 0 #c0c0c0,0 4px 10px 2px #dfdfdf;
+    -webkit-box-shadow: 0 4px 0 0 var(--prim-shadow),0 4px 10px 2px var(--prim-shadow-sec);
+    box-shadow: 0 4px 0 0 var(--prim-shadow),0 4px 10px 2px var(--prim-shadow-sec);
     transition-duration: 0.1s;
 }
 
 #saved-label:hover,
 input[type='submit']:hover,
 .options-card button:hover {
-    -webkit-box-shadow: 0 3px 0 0 #c0c0c0,0 3px 7.5px 1.5px #d0d0d0;
-    box-shadow: 0 3px 0 0 #c0c0c0,0 3px 7.5px 1.5px #d0d0d0;
+    -webkit-box-shadow: 0 3px 0 0 var(--prim-shadow),0 3px 7.5px 1.5px var(--prim-shadow-sec);
+    box-shadow: 0 3px 0 0 var(--prim-shadow),0 3px 7.5px 1.5px var(--prim-shadow-sec);
     transform: translateY(1px);
 }
 
 #saved-label:active,
 input[type='submit']:active,
 .options-card button:active {
-    -webkit-box-shadow: 0 0 0 0 #c0c0c0, 0 0 0 0 #d0d0d0;
-    box-shadow: 0 0 0 0 #c0c0c0, 0 0 0 0 #d0d0d0;
+    -webkit-box-shadow: 0 0 0 0 var(--prim-shadow), 0 0 0 0 var(--prim-shadow-sec);
+    box-shadow: 0 0 0 0 var(--prim-shadow), 0 0 0 0 var(--prim-shadow-sec);
     transform: translateY(4px);
 }
 
 .options-card button.bad {
-    background-color: #ffe0e0;
-    -webkit-box-shadow: 0 4px 0 0 #ffc0c0,0 4px 10px 2px #ffd0d0;
-    box-shadow: 0 4px 0 0 #ffc0c0,0 4px 10px 2px #ffd0d0;
+    background-color: hsla(0,100%,50%,0.5);
+    -webkit-box-shadow: 0 4px 0 0 hsla(0,100%,50%,0.5),0 4px 10px 2px hsla(0,100%,50%,0.5);
+    box-shadow: 0 4px 0 0 hsla(0,100%,50%,0.5),0 4px 10px 2px hsla(0,100%,50%,0.5);
 }
 
 .options-card button.bad:hover {
-    background-color: #ffe0e0;
-    -webkit-box-shadow: 0 3px 0 0 #ffc0c0,0 3px 7.5px 1.5px #ffd0d0;
-    box-shadow: 0 3px 0 0 #ffc0c0,0 3px 7.5px 1.5px #ffd0d0;
+    -webkit-box-shadow: 0 3px 0 0 hsla(0,100%,50%,0.5),0 3px 7.5px 1.5px hsla(0,100%,50%,0.5);
+    box-shadow: 0 3px 0 0 hsla(0,100%,50%,0.5),0 3px 7.5px 1.5px hsla(0,100%,50%,0.5);
     transform: translateY(1px);
 }
 
 .options-card button.bad:active {
-    background-color: #ffe0e0;
-    -webkit-box-shadow: 0 0 0 0 #ffc0c0,0 0 0 0 #ffd0d0;
-    box-shadow: 0 0 0 0 #ffc0c0,0 0 0 0 #ffd0d0;
+    -webkit-box-shadow: 0 0 0 0 hsla(0,100%,50%,0.5),0 0 0 0 hsla(0,100%,50%,0.5);
+    box-shadow: 0 0 0 0 hsla(0,100%,50%,0.5),0 0 0 0 hsla(0,100%,50%,0.5);
     transform: translateY(4px);
 }
 

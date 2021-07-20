@@ -8,8 +8,8 @@
     justify-content: center;
 }
 
-#black-color {
-    color: #000000;
+#sec-color {
+    color: var(--sec);
 }
 
 #red-color {
@@ -25,25 +25,25 @@
 }
 
 #eraser-color {
-    color: #000000
+    color: var(--sec);
 }
 
 #saved:checked + #saved-label {
-    background-color: #e0ffe0;
-    -webkit-box-shadow: 0 4px 0 0 #c0ffc0,0 4px 10px 2px #d0ffd0;
-    box-shadow: 0 4px 0 0 #c0ffc0,0 4px 10px 2px #d0ffd0;
+    background-color: hsla(120,100%,50%,0.25);
+    -webkit-box-shadow: 0 4px 0 0 hsla(120,100%,50%,0.25),0 4px 10px 2px hsla(120,100%,50%,0.25);
+    box-shadow: 0 4px 0 0 hsla(120,100%,50%,0.25),0 4px 10px 2px hsla(120,100%,50%,0.25);
 }
 
 #saved:checked + #saved-label:hover {
-    background-color: #e0ffe0;
-    -webkit-box-shadow: 0 3px 0 0 #c0ffc0,0 3px 7.5px 1.5px #d0ffd0;
-    box-shadow: 0 3px 0 0 #c0ffc0,0 3px 7.5px 1.5px #d0ffd0;
+    background-color: hsla(120,100%,50%,0.25);
+    -webkit-box-shadow: 0 3px 0 0 hsla(120,100%,50%,0.25),0 3px 7.5px 1.5px hsla(120,100%,50%,0.25);
+    box-shadow: 0 3px 0 0 hsla(120,100%,50%,0.25),0 3px 7.5px 1.5px hsla(120,100%,50%,0.25);
     transform: translateY(1px);
 }
 
 #saved:checked + #saved-label:active {
-    background-color: #e0ffe0;
-    -webkit-box-shadow: 0 0 0 0 #c0ffc0,0 0 0 0 #d0ffd0;
-    box-shadow: 0 0 0 0 #c0ffc0,0 0 0 0 #d0ffd0;
+    background-color: hsla(120,100%,50%,0.25);
+    -webkit-box-shadow: 0 0 0 0 hsla(120,100%,50%,0.25),0 0 0 0 hsla(120,100%,50%,0.25);
+    box-shadow: 0 0 0 0 hsla(120,100%,50%,0.25),0 0 0 0 hsla(120,100%,50%,0.25);
     transform: translateY(4px);
 }

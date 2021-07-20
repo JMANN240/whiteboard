@@ -13,5 +13,24 @@
 .preview-whiteboard > canvas {
     width: 10vw;
     height: 10vh;
-    border: 1px solid black;
+    border: 1px solid var(--sec);
+}
+
+#switch-theme {
+    color: var(--prim);
+    background-color: var(--sec);
+    -webkit-box-shadow: 0 4px 0 0 var(--sec-shadow-sec),0 4px 10px 2px var(--sec-shadow);
+    box-shadow: 0 4px 0 0 var(--sec-shadow-sec),0 4px 10px 2px var(--sec-shadow);
+}
+
+#switch-theme:hover {
+    -webkit-box-shadow: 0 3px 0 0 var(--sec-shadow-sec),0 3px 7.5px 1.5px var(--sec-shadow);
+    box-shadow: 0 3px 0 0 var(--sec-shadow-sec),0 3px 7.5px 1.5px var(--sec-shadow);
+    transform: translateY(1px);
+}
+
+#switch-theme:active {
+    -webkit-box-shadow: 0 0 0 0 var(--sec-shadow-sec),0 0 0 0 var(--sec-shadow);
+    box-shadow: 0 0 0 0 var(--sec-shadow-sec),0 0 0 0 var(--sec-shadow);
+    transform: translateY(4px);
 }

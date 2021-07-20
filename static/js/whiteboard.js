@@ -16,7 +16,7 @@ $(window).on('resize', (e) => {
 });
 
 var ctx = whiteboard.getContext("2d");
-ctx.strokeStyle = "#000000";
+ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--sec');
 ctx.lineWidth = 3;
 ctx.lineCap = "round";
 ctx.lineJoin = "round";
@@ -38,7 +38,7 @@ var drawStrokes = (context, strokes, offset) => {
 
 var drawPoints = (context, stroke, offset) => {
     var [points, color, width] = stroke;
-    context.strokeStyle = color;
+    context.strokeStyle = (color == '#ffffff' || color == '#000000') ? getComputedStyle(document.documentElement).getPropertyValue('--sec') : color;
     context.lineWidth = width;
     context.lineCap = "round";
     ctx.lineJoin = "round";
@@ -72,9 +72,18 @@ $.ajax({
 var start_point;
 var prev_point;
 
+console.log(getComputedStyle(document.documentElement).getPropertyValue('--sec'));
+
+if (getComputedStyle(document.documentElement).getPropertyValue('--sec') == '#ffffff') {
+    $('#sec-color').html('White');
+} else if (getComputedStyle(document.documentElement).getPropertyValue('--sec') == '#000000') {
+    $('#sec-color').html('Black');
+}
+
+
 $('#colors-container > button').on("click", (e) => {
     if ($(e.target).attr('id') == 'eraser-color') {
-        ctx.strokeStyle = '#ffffff';
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--prim');
         ctx.lineWidth = 13;
     } else {
         ctx.lineWidth = 3;

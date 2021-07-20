@@ -1,6 +1,22 @@
 const logged_in = $('#login').length == 0;
 
+var switch_theme_button = document.querySelector('#switch-theme');
+
+if (theme == 'light') {
+    switch_theme_button.innerHTML = 'Blackboard';
+    switch_theme_button.classList.add('blackboard-button');
+} else if (theme == 'dark') {
+    switch_theme_button.innerHTML = 'Whiteboard';
+    switch_theme_button.classList.add('whiteboard-button');
+}
+
 $('#options-hint').html(touch ? "Two-finger Tap for options." : "Space for options.")
+
+$('#switch-theme').on('click', (e) => {
+    theme = theme == 'light' ? 'dark' : 'light'
+    window.localStorage.setItem('theme', theme);
+    update_theme();
+});
 
 $('#create-whiteboard').on('click', (e) => {
     $.ajax({
@@ -81,7 +97,7 @@ var drawStrokes = (context, strokes, offset, scale) => {
 
 var drawPoints = (context, stroke, offset, scale) => {
     var [points, color, width] = stroke;
-    context.strokeStyle = color;
+    context.strokeStyle = (color == '#ffffff' || color == '#000000') ? getComputedStyle(document.documentElement).getPropertyValue('--sec') : color;;
     context.lineWidth = 1;
     context.lineCap = "round";
     context.lineJoin = "round";
