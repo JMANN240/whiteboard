@@ -238,7 +238,7 @@ def new_stroke(points, color, width):
     print('new-stroke')
     addStroke(session['whiteboard_id'], points, color, width)
     strokes = loadStrokes(session['whiteboard_id'])
-    socketio.emit('strokes', strokes, to=session['whiteboard_id'], broadcast=True)
+    socketio.emit('strokes', strokes, to=session['whiteboard_id'], broadcast=True, include_self=False)
 
 @socketio.on("clear")
 def clear():
