@@ -215,6 +215,7 @@ whiteboard.addEventListener("mouseup", (e) => {
         if (current_stroke.length > 0) {
             current_stroke.push([e.clientX-stroke_offset[0], e.clientY-stroke_offset[1]]);
             socket.emit('new-stroke', current_stroke, erasing ? 'erase' : ctx.strokeStyle, ctx.lineWidth);
+            strokes.push(current_stroke);
         }
         current_stroke = [];
     }
