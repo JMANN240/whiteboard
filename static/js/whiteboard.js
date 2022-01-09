@@ -62,17 +62,11 @@ var drawPoints = (context, stroke, offset) => {
 
 var socket;
 
-$.ajax({
-    type: 'GET',
-    url: '/api/settings',
-    success: (res) => {
-        socket = io.connect(res.socketio_host + ':' + res.port, {query: `id=${whiteboard_id}`});
+socket = io.connect(options={query: `id=${whiteboard_id}`});
 
-        socket.on('strokes', (s) => {
-            strokes = s
-            drawStrokes(ctx, strokes, stroke_offset);
-        });
-    }
+socket.on('strokes', (s) => {
+    strokes = s
+    drawStrokes(ctx, strokes, stroke_offset);
 });
 
 var start_point;

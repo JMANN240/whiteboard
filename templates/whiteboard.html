@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<script defer src="{{url_for('static', filename='js/socketio-4.1.2.js')}}"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js" integrity="sha512-MgkNs0gNdrnOM7k+0L+wgiRc5aLgl74sJQKbIWegVIMvVGPc1+gc1L2oK9Wf/D9pq58eqIJAxOonYPVE5UwUFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script defer src="{{url_for('static', filename='js/whiteboard.js')}}"></script>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/whiteboard.css')}}">
 {% endblock %}

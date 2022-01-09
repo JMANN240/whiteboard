@@ -1,4 +1,3 @@
-from sys import meta_path
 from flask import Flask, render_template, request, session, redirect, flash, make_response, jsonify
 from flask_socketio import SocketIO, join_room
 from passlib.hash import sha256_crypt as sha256
@@ -240,4 +239,4 @@ def clear():
     socketio.emit('strokes', [], to=session['whiteboard_id'], broadcast=True)
 
 if (__name__ == '__main__'):
-    socketio.run(app, host="0.0.0.0")
+    socketio.run(app)
